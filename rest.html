@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>restcountries API iteration</title>
+</head>
+<body>
+    <script>
+        const req = new XMLHttpRequest();
+req.addEventListener("load", reqListener);
+req.open("GET", "https://restcountries.com/v3.1/all");
+req.send();
+    function reqListener() {
+            let country=JSON.parse(this.responseText);
+    
+    //filter by getting countries in Asia
+    let continent = country.filter(cont => cont.region ==="Asia")
+    for(let i = 0; i<continent.length; i++){
+        console.log(continent[i].name.common)
+    }
+
+    //filter by getting countries population less than 200000
+    let population1 = country.filter(popu => popu.population < 200000)
+    // console.log(population1)
+    for(let i = 0; i<population1.length; i++){
+        console.log(population1[i].name.common)
+    }
+    
+    // Getting name,capital,flag using forEach method
+    country.forEach((e)=>{
+        console.log(`${e.name.common}-${e.capital}-${e.flag}`)
+    })
+
+    //Getting total population using reduce method
+    let countryPopulation = [];
+    for(let i = 0; i<country.length; i++){
+        countryPopulation.push(country[i].population);
+    }
+
+    let totalPopulation = countryPopulation.reduce((x,y)=>{
+        return x + y;
+    })
+    console.log(totalPopulation);
+
+    //Getting USD using countries 
+    const usd= country.filter((count)=> count.currencies?.USD?.symbol === '$')
+    for (let i = 0; i<usd.length; i++){
+        console.log(usd[i].name.common)
+    }
+ 
+    }
+
+    </script>
+</body>
+</html>
